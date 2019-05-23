@@ -10,7 +10,30 @@ char **reconstruct_trip(Ticket **tickets, int length)
   char **route = malloc(length * sizeof(char *));
 
   /* YOUR CODE HERE */
+  //insert into hashtable
+  for (int i = 0; i<length; i++)
+  {
+    hash_table_insert(ht, tickets[i]->source, tickets[i]->destination);
+  }
 
+  //find the flight with source "NONE", start_flight
+  // char *current = hash_table_retrieve(ht, "NONE"); //source
+
+  //connect flights
+  for (int i = 0; i<length; i++)
+  {
+    if(i == 0)
+    {
+      route[0] = hash_table_retrieve(ht, "NONE"); //CURRENT, start_ticket
+    } else
+    {
+      route[i] = hash_table_retrieve(ht, route[i-1]);
+      //i is source is the prev value/destination
+    }
+
+  }
+
+  destroy_hash_table(ht);
   return route;
 }
 
